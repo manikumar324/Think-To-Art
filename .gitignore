@@ -22,3 +22,10 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Environment variables
+.env
+.env.*  # covers .env.development, .env.production, etc.
+
+# React build output
+build/
