@@ -85,7 +85,7 @@ export const AppContextProvider = ({ children }) => {
           // Update chats state immediately
           setChats((prev) => [newChat,...prev]);
           setSelectedChat(newChat);
-          toast.success("New Chat Created")
+        //   toast.success("New Chat Created")
         }
 
         if (!auto) toast.success("New chat created successfully!");

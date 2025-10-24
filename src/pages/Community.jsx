@@ -7,7 +7,7 @@ const Community = () => {
 
   const [images, setImages] = useState([])
   const [loading, setLoading] = useState(true)
-  const {axios, token} = useAppContext();
+  const {axios, token, user} = useAppContext();
 
   
   //fetch community images from server  
@@ -45,7 +45,7 @@ const Community = () => {
               object-cover group-hover:scale-105 transition-transform duration-300 ease-in-out'/>
               <p className='absolute bottom-0 right-0 text-xs bg-black/50 
               backdrop-blur text-white px-4 py-1 rounded-tl-xl opacity-0 
-              group-hover:opacity-100 transition duration-300'>Created by : {item.userName}</p>
+              group-hover:opacity-100 transition duration-300'>Created by : {user.name}</p>
             </a>
           ))}
         </div>
