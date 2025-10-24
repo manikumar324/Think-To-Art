@@ -1,12 +1,15 @@
 import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useAppContext } from '../context/AppContext'
 
 const Loading = () => {
 
   const navigate = useNavigate()
+  const {fetchUser} = useAppContext();  //we are usinf fecthUser here because when you buy credits it's updating after page refresh to avoid that.
 
   useEffect(()=>{
     const timeOut = setTimeout(() => {
+      fetchUser()
       //redirect to home page
       navigate("/")
     },8000)

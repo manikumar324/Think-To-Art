@@ -1,16 +1,31 @@
 import React, { useEffect, useState } from 'react'
 import { dummyPublishedImages } from '../assets/assets';
 import Loading from './Loading';
+import { useAppContext } from '../context/AppContext';
 
 const Community = () => {
 
   const [images, setImages] = useState([])
   const [loading, setLoading] = useState(true)
+  const {axios, token} = useAppContext();
 
+  
   //fetch community images from server  
   const fetchImages = async () => {
-    setImages(dummyPublishedImages)
+   try{
+    const response = await axios.get("/api/user/publishedImages",{headers : {Authorization : `Bearer ${token}`}})
+    if(response.status === 200){
+      console.log("Fetched images:", response.data.images);
+      setImages(response.data.images)
+    }else{
+      console.log("Error while fetcjing community images")
+    }
+   }
+   catch(error){
+      toast.error(error.message)
+   }finally{
     setLoading(false)
+   }
   }
 
   useEffect(() => {
@@ -24,9 +39,9 @@ const Community = () => {
       {images.length > 0 ? (
         <div className='flex flex-wrap max-sm:justify-center gap-5 md:gap-9'>
           {images.map((item, index)=>(
-            <a key={index} href={item.imageUrl} target='_blank' className='relative group block rounded-lg overflow-hidden
+            <a key={index} href={item.content} target='_blank' className='relative group block rounded-lg overflow-hidden
             border border-gray-200 dark:border-purple-700 shadow-sm hover:shadow-md transition-shadow duration-300'>
-              <img src={item.imageUrl} alt='' className='w-full h-25 md:h-50 2xl:h-62
+              <img src={item.content} alt='' className='w-full h-24 md:h-48 2xl:h-62
               object-cover group-hover:scale-105 transition-transform duration-300 ease-in-out'/>
               <p className='absolute bottom-0 right-0 text-xs bg-black/50 
               backdrop-blur text-white px-4 py-1 rounded-tl-xl opacity-0 

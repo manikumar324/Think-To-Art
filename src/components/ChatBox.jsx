@@ -3,12 +3,14 @@ import { assets } from '../assets/assets';
 import { useAppContext } from '../context/AppContext';
 import { useState } from 'react';
 import Message from './Message';
+import Credits from '../pages/Credits';
+import { data } from 'react-router-dom';
 
 const ChatBox = () => {
 
   const containerRef = useRef(null)
 
-  const {selectedChat, theme} = useAppContext();
+  const {selectedChat, theme, user, setUser, axios, token} = useAppContext();
 
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -17,9 +19,43 @@ const ChatBox = () => {
   const [mode, setMode] = useState('text')
   const [isPublished, setIsPublished] = useState(false)
 
-  const onSubmit = ((e)=>{
+  const onSubmit = async (e)=>{
     e.preventDefault();
-  })
+    
+    try{
+      if(!user) return null;
+      const promptCopy = prompt
+      setPrompt('')
+      // ✅ Show loader before calling API
+    setLoading(true);
+      setMessages(prev => [...prev, {role: "user", content : prompt, timestamp:Date.now(), isImage:false}])
+
+      const response = await axios.post(`/api/message/${mode}`,{chatId : selectedChat._id, prompt,isPublished},
+        {headers : {Authorization :`Bearer ${token}`}}
+      )
+      if(response.status === 200){
+        setMessages(prev => [...prev,response.data.reply])
+        //decrease credits
+        if(mode === 'image'){
+          setUser(prev => ({...prev, credits : prev.credits -2}))
+        }
+        else{
+          setUser(prev => ({...prev, credits : prev.credits -1}))
+        }
+      }else{
+        toast.error(data.message)
+        setPrompt(promptCopy)
+      }
+    }
+    catch(error){
+      console.log("Error while generating a image")
+      toast.error(error.message)
+    }
+    finally {
+      setPrompt('')
+      setLoading(false)
+    }
+  }
 
   useEffect(() => {
     if(selectedChat){
