@@ -21,10 +21,10 @@ const Message = ({ message }) => {
               {moment(message.timestamp).fromNow()}
             </span>
           </div>
-          {/* <div className="w-5 h-5 rounded-full bg-purple-500 flex items-center justify-center text-white font-bold">
+          <div className="w-6 h-6 rounded-full bg-purple-500 flex items-center justify-center text-white font-semibold">
             {user ? user.name.charAt(0).toUpperCase() : "U"}
-          </div> */}
-          <img src={assets.user_icon} alt="" className='w-8 rounded-full'/>
+          </div>
+          {/* <img src={assets.user_icon} alt="" className='w-8 rounded-full'/> */}
         </div>
       ) : (
         <div

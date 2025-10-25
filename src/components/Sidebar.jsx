@@ -2,6 +2,10 @@ import React, { useState } from "react";
 import { useAppContext } from "../context/AppContext";
 import { assets } from "../assets/assets";
 import moment from "moment";
+import toast from "react-hot-toast";
+import { MessageCircle } from "lucide-react";
+
+
 
 const Sidebar = () => {
   const {
@@ -26,23 +30,26 @@ const Sidebar = () => {
     setToken(null);
   };
 
-  const deleteChat = async (e, chatId) => {
-    try {
-      e.stopPropagation();
-      const confirmDelete = window.confirm("Are you sure you want to delete this chat?");
-      if (!confirmDelete) return;
+const deleteChat = async (e, chatId) => {
+  try {
+    e.stopPropagation();
+    const confirmDelete = window.confirm("Are you sure you want to delete this chat?");
+    if (!confirmDelete) return;
 
-      const response = await axios.delete(`/api/chat/delete/${chatId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+    const response = await axios.delete(`/api/chat/delete/${chatId}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
 
-      if (response.status === 200) {
-        setChats((prevChats) => prevChats.filter((chat) => chat._id !== chatId));
-      }
-    } catch (error) {
-      console.log("Error deleting Chat:", error.message);
+    if (response.status === 200) {
+      setChats((prevChats) => prevChats.filter((chat) => chat._id !== chatId));
+      toast.success("Chat deleted successfully!"); // ✅ Toast here
     }
-  };
+  } catch (error) {
+    console.log("Error deleting Chat:", error.message);
+    toast.error("Failed to delete chat. Please try again."); // ❌ Toast on error
+  }
+};
+
 
   return (
     <>
@@ -82,10 +89,11 @@ const Sidebar = () => {
             createNewChat(); // Only call context function; it already triggers toast
             setIsMenuOpen(false); // close sidebar on mobile
           }}
-          className="flex items-center justify-center w-full py-2 mt-10 text-white 
+          className="flex items-center justify-center w-full py-3 mt-10 text-white 
           bg-gradient-to-r from-[#A456F7] to-[#3D81F6] text-sm rounded-md cursor-pointer"
         >
-          <span className="mr-2 text-xl">+</span>New Chat
+         <MessageCircle className="w-5 h-5 mr-2" />  {/* Lucide icon */}
+          New Chat
         </button>
 
         {/* Search Bar */}
@@ -102,40 +110,55 @@ const Sidebar = () => {
 
         {/* Recent Chats */}
         {chats.length > 0 && <p className="mt-4 text-sm">Recent Chats</p>}
-        <div className="flex-1 overflow-y-scroll mt-3 text-sm space-y-3">
-          {chats
-            .filter((chat) =>
-              chat.messages[0]
-                ? chat.messages[0].content.toLowerCase().includes(search.toLowerCase())
-                : chat.name.toLowerCase().includes(search.toLowerCase())
-            )
-            .map((chat) => (
-              <div
-                key={chat._id}
-                onClick={() => {
-                  navigate("/");
-                  setSelectedChat(chat);
-                  setIsMenuOpen(false);
-                }}
-                className="p-2 px-4 dark:bg-[#57317C]/10 border border-gray-300 dark:border-[#80609F]/15 rounded-md cursor-pointer flex justify-between group"
-              >
-                <div>
-                  <p className="truncate w-full ">
-                    {chat.messages.length > 0 ? chat.messages[0].content.slice(0, 32) : chat.name}
-                  </p>
-                  <p className="text-xs text-gray-500 dark:text-[#B1A6C0]">
-                    {moment(chat.updatedAt).fromNow()}
-                  </p>
-                </div>
-                <img
-                  onClick={(e) => deleteChat(e, chat._id)}
-                  src={assets.bin_icon}
-                  alt=""
-                  className="group-hover:block w-4 cursor-pointer not-dark:invert"
-                />
-              </div>
-            ))}
+
+<div className="flex-1 overflow-y-scroll mt-3 text-sm space-y-3">
+  {chats
+    .filter((chat) =>
+      chat.messages[0]
+        ? chat.messages[0].content.toLowerCase().includes(search.toLowerCase())
+        : chat.name.toLowerCase().includes(search.toLowerCase())
+    )
+    .map((chat) => {
+      // Determine the display text
+      const displayText =
+        chat.messages.length > 0
+          ? chat.messages[0].content.length > 25
+            ? chat.messages[0].content.slice(0, 25) + "..."
+            : chat.messages[0].content
+          : chat.name.length > 25
+          ? chat.name.slice(0, 25) + "..."
+          : chat.name;
+
+      return (
+        <div
+          key={chat._id}
+          onClick={() => {
+            navigate("/");
+            setSelectedChat(chat);
+            setIsMenuOpen(false);
+          }}
+          className="p-2 px-4 dark:bg-[#57317C]/10 border border-gray-300 dark:border-[#80609F]/15 rounded-md cursor-pointer flex justify-between items-start group"
+        >
+          <div className="flex-1 min-w-0">
+            <p className="truncate font-medium w-full" title={chat.messages.length > 0 ? chat.messages[0].content : chat.name}>
+              {displayText}
+            </p>
+            <p className="text-xs text-gray-500 dark:text-[#B1A6C0]">
+              {moment(chat.updatedAt).fromNow()}
+            </p>
+          </div>
+
+          <img
+            onClick={(e) => deleteChat(e, chat._id)}
+            src={assets.bin_icon}
+            alt="Delete Chat"
+            className="ml-2 w-4 cursor-pointer mt-2 group-hover:block not-dark:invert"
+          />
         </div>
+      );
+    })}
+</div>
+
 
         {/* Community */}
         <div
@@ -161,7 +184,7 @@ const Sidebar = () => {
           <div className="flex flex-col text-sm">
             <p>Credits : {user?.credits}</p>
             <p className="text-sm text-gray-400">
-              Purchase credits to use ThinkToArt
+              Purchase credits to use QuickGPT
             </p>
           </div>
         </div>
@@ -187,7 +210,7 @@ const Sidebar = () => {
         {/* User Account */}
         <div className="flex items-center gap-3 p-3 mt-4 border border-gray-300 dark:border-white/15 rounded-md cursor-pointer group">
           {/* <img src={assets.user_icon} alt="" className="w-7 rounded-full" /> */}
-          <div className="w-7 h-7 rounded-full bg-purple-600 flex items-center justify-center text-white font-bold">
+          <div className="w-7 h-7 rounded-full bg-purple-500 flex items-center justify-center text-white font-bold">
     {user ? user.name.charAt(0).toUpperCase() : "U"}
   </div>
           <p className="flex-1 text-sm dark:text-primary truncate">{user ? user.name : "Login your account"}</p>
