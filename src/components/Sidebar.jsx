@@ -28,6 +28,7 @@ const Sidebar = () => {
   const logout = () => {
     localStorage.removeItem("token");
     setToken(null);
+    toast.success("Logged Out Successfully!")
   };
 
 const deleteChat = async (e, chatId) => {
@@ -62,7 +63,7 @@ const deleteChat = async (e, chatId) => {
       />
 
       <div
-        className={`flex flex-col h-screen min-w-72 p-5 
+        className={`flex flex-col h-screen min-w-72 p-5 flex-shrink-0
           dark:bg-gradient-to-b from-[#242124]/30 to-[#000000]/30
           border-r border-[#80609F]/30 backdrop-blur-3xl bg-white dark:bg-[#0b0016]
           transition-transform duration-500 max-md:fixed left-0 top-0 z-50

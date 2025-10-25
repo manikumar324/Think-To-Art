@@ -35,7 +35,7 @@ const Login = () => {
           toast.success(response.data.message || "Login successful!");
           setToken(response.data.token);
           localStorage.setItem("token", response.data.token);
-          console.log("User LoggedIn Successfully")
+          console.log("User LoggedIn Successfully!")
           console.log("Token :-",response.data.token)
         } else if (state === "register") {
           // Register: switch to login form
@@ -103,7 +103,7 @@ const Login = () => {
       </div>
 
       {state === "register" ? (
-        <p>
+        <p className="text-sm">
           Already have an account?{" "}
           <span
             onClick={() => setState("login")}
