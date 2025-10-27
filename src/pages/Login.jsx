@@ -41,9 +41,9 @@ const Login = () => {
           // Register: switch to login form
           toast.success("Registered successfully! Please login.");
           setState("login");       // show login form
-          setName("");             // clear inputs
-          setEmail("");
-          setPassword("");
+        //   setName("");             // clear inputs
+        //   setEmail("");
+        //   setPassword("");
         }
       }
     } catch (error) {
