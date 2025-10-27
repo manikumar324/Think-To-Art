@@ -46,7 +46,7 @@ const ChatBox = () => {
 
     try {
       // ✅ Use backend port (5000)
-      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/message/${mode}`, {
+      const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/api/message/${mode}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -58,7 +58,7 @@ const ChatBox = () => {
           isPublished,
         }),
       });
-
+      console.log("Requested URL :-",`${import.meta.env.VITE_BACKEND_URL}/api/message/${mode}`)
       if (!response.ok) {
         let errMsg = 'Something went wrong';
         try {
