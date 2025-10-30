@@ -20,6 +20,7 @@ const Sidebar = () => {
     axios,
     token,
     setChats,
+    selectedChat
   } = useAppContext();
 
   const [search, setSearch] = useState("");
@@ -42,14 +43,36 @@ const deleteChat = async (e, chatId) => {
     });
 
     if (response.status === 200) {
-      setChats((prevChats) => prevChats.filter((chat) => chat._id !== chatId));
-      toast.success("Chat deleted successfully!"); // ✅ Toast here
+      setChats((prevChats) => {
+        const updatedChats = prevChats.filter((chat) => chat._id !== chatId);
+
+        // 🔁 If the deleted chat is the currently opened one
+        if (selectedChat?._id === chatId) {
+          const deletedIndex = prevChats.findIndex((chat) => chat._id === chatId);
+          let newSelectedChat = null;
+
+          // Prefer the next chat if exists, else previous one
+          if (updatedChats[deletedIndex]) {
+            newSelectedChat = updatedChats[deletedIndex];
+          } else if (updatedChats[deletedIndex - 1]) {
+            newSelectedChat = updatedChats[deletedIndex - 1];
+          }
+
+          // Update selectedChat so ChatBox shows the next available chat
+          setSelectedChat(newSelectedChat || null);
+        }
+
+        return updatedChats;
+      });
+
+      toast.success("Chat deleted successfully!");
     }
   } catch (error) {
     console.log("Error deleting Chat:", error.message);
-    toast.error("Failed to delete chat. Please try again."); // ❌ Toast on error
+    toast.error("Failed to delete chat. Please try again.");
   }
 };
+
 
 
   return (

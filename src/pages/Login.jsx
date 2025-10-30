@@ -127,7 +127,7 @@ const Login = () => {
      <button
   type="submit"
   disabled={loading}
-  className={`bg-purple-500 hover:bg-purple-600 transition-all text-white w-full py-2 rounded-md flex justify-center items-center ${
+  className={`bg-purple-500 hover:bg-purple-600 transition-all text-white w-full py-2 cursor-pointer rounded-md flex justify-center items-center ${
     loading ? "opacity-70 cursor-not-allowed" : ""
   }`}
 >
