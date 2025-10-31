@@ -1,16 +1,65 @@
-# React + Vite
+🎨 QuickGPT (Think-To-Art)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+🌐 Live Demo
+👉 Frontend: https://think-to-art.onrender.com
+👉 Backend API: https://think-to-art-backend.onrender.com
 
-Currently, two official plugins are available:
+An AI-powered creative platform for artists, thinkers, and innovators — now with real-time response streaming!
+QuickGPT (Think-To-Art) allows users to interact with an intelligent AI assistant that generates ideas, inspirations, and creative insights in real time.
+Built using the MERN stack, it delivers a smooth, responsive, and immersive user experience — powered by OpenAI APIs and live streaming responses.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+🚀 Features
+✨ AI Chat & Response Streaming
+Real-time word-by-word AI responses (like ChatGPT)
+Markdown-supported rendering for rich formatting
+Improved conversational flow with instant feedback
 
-## React Compiler
+🎨 Modern Frontend
+Built with React.js and Tailwind CSS
+Responsive and interactive UI for all devices
+Clean and minimal design optimized for readability
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+🗂️ Additional Functionalities
+User Authentication (Login / Register)
+Chat creation and management
+Message persistence and deletion
 
-## Expanding the ESLint configuration
+🛠️ Tech Stack
+| Category                | Technologies                            |
+| ----------------------- | --------------------------------------- |
+| **Frontend**            | React.js, Tailwind CSS, React Hot Toast |
+| **Backend**             | Node.js, Express.js                     |
+| **Database**            | MongoDB                                 |
+| **AI Integration**      | OpenAI API                              |
+| **Real-Time Streaming** | Server-Sent Events (SSE)                |
+| **Deployment**          | Render                                  |
+| **Others**              | Axios, JWT, CORS, dotenv                |
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+⚙️ Installation & Setup
+1️⃣ Clone the repository
+git clone https://github.com/yourusername/think-to-art.git
+cd think-to-art
+
+2️⃣ Install dependencies for both client and server
+cd client
+npm install
+
+cd ../server
+npm install
+
+4️⃣ Start the development servers
+🖥️ Backend:
+cd server
+npm run dev
+
+🌐 Frontend:
+cd client
+npm run dev
+
+🧩 Project Highlights
+Streaming AI responses for an engaging chat experience
+Optimized backend using Express middleware & proper CORS handling
+Markdown rendering for better visualization of AI-generated responses
+Deployed on Render (both frontend and backend)
+Scalable structure for future features like image generation, credits, or premium tiers
+Integrated CORS handling for both local and deployed environments
